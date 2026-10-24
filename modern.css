@@ -13,6 +13,7 @@
   --card: #ffffff;
   --text: #18181b;
   --muted: #71717a;
+  --label: #52525b; /* labels in label/value tables and field labels: darker than --muted for readability */
   --border: #e4e4e7;
   --radius: 16px;
   --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 32px -8px rgba(16, 24, 40, .10);
@@ -180,7 +181,7 @@ fieldset legend { display: none; }
 .cms-home .registered-users > h3:first-of-type,
 .cms-home .registered-users > h3:first-of-type + p { order: 2; }
 .cms-home .registered-users > h3:first-of-type { font-size: 13px !important; color: #3f3f46; margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--border); }
-.cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: #52525b; }
+.cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: var(--label); }
 .cms-home .registered-users > h3:nth-of-type(2) { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 2px; }
 .cms-home .registered-users > h3:nth-of-type(2) + p { color: var(--muted); }
 /* Wrong-password message: the site renders an inline-styled dark red bar (background:#990000); make it an alert box */
@@ -220,6 +221,12 @@ select {
   padding-right: 36px !important;
   background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 16px;
 }
+/* hover feedback for dropdowns and checkboxes on every form (focus keeps its blue border) */
+select { cursor: pointer; }
+select:hover:not(:focus) { border-color: #a1a1aa !important; }
+input[type="checkbox"], input[type="radio"] { cursor: pointer; accent-color: var(--accent); }
+input[type="checkbox"]:hover, input[type="radio"]:hover { filter: brightness(.92); }
+:is(input[type="checkbox"], input[type="radio"]) + label, label:has(> :is(input[type="checkbox"], input[type="radio"])) { cursor: pointer; }
 /* Chrome paints autofilled fields light blue; keep them white like the rest of the form */
 input.input-text:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset; -webkit-text-fill-color: var(--text); }
 input.input-text:focus, select:focus, textarea:focus {
@@ -559,7 +566,7 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #artguide-contain p[style*="red"] { color: #dc2626 !important; }
 #artguide-contain p > b { font-weight: 400; } /* the site bolds whole paragraphs, so nothing stood out */
 /* "Dipaparkan dari ... hingga ..." date line: inline #999 (2.8:1 contrast) and a 10px indent on an <h6> */
-#artguide-contain > h6 { margin: 0 0 8px !important; color: #52525b !important; font-size: 12px; font-weight: 500; }
+#artguide-contain > h6 { margin: 0 0 8px !important; color: var(--label) !important; font-size: 12px; font-weight: 500; }
 
 /* ---- Personal details page (peribadi.php): details column + "Maklumat Lanjut" contact column ---- */
 .std:has(> #contacts-right-col) { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: 24px; align-items: start; }
@@ -573,13 +580,36 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 .std:has(> #contacts-right-col) #content h3 > img.ikon { display: none; }
 .std:has(> #contacts-right-col) #content h3 { margin: 28px 0 8px; font-size: 18px !important; font-weight: 700; }
 .std:has(> #contacts-right-col) #content h3:first-child { margin-top: 0; }
-.std:has(> #contacts-right-col) #content > br { display: none; }
-.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; }
+/* only stray breaks after the tables; earlier ones separate lines like "INSTITUSI: …<br>BIDANG: …" */
+.std:has(> #contacts-right-col) #content > table ~ br { display: none; }
+/* the result detail view starts with "<b>INSTITUSI</b>: value<br>…" directly in #content: muted labels */
+.std:has(> #contacts-right-col) #content > b { color: var(--label); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; margin: 0 !important; } /* site adds inline margin-left:20px */
 .std:has(> #contacts-right-col) #content .data-table th, .std:has(> #contacts-right-col) #content .data-table td { padding: 12px 16px 12px 0 !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; vertical-align: baseline; text-align: left; line-height: 1.5; }
 .std:has(> #contacts-right-col) #content .data-table td { font-size: 14px; font-weight: 500; }
-.std:has(> #contacts-right-col) #content .data-table th { width: 160px; white-space: normal !important; color: var(--muted); font-size: 13px; }
+.std:has(> #contacts-right-col) #content .data-table th { width: 160px; white-space: normal !important; color: var(--label); font-size: 13px; }
 .std:has(> #contacts-right-col) #content .data-table th strong { font-weight: 500; }
 .std:has(> #contacts-right-col) #content .data-table tr:last-child > * { border-bottom: 0 !important; }
+/* section title rows ("Keputusan Peperiksaan", "Maklumat Perjanjian"): a th spanning all columns with a
+   <center> (or <strong>, e.g. "Rujukan"); turn it into a highlighted, left-aligned title bar */
+.std:has(> #contacts-right-col) #content .data-table th[colspan] { padding: 20px 0 8px !important; border-bottom: 0 !important; }
+.std:has(> #contacts-right-col) #content .data-table th[colspan] > :is(center, strong), #frmBorang:has(> #kodPeringkat) td[colspan] > center { display: block; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); color: #1e3a8a; font-size: 14px; font-weight: 700; text-align: left; }
+/* results tables (a 4-column header row: Tahun | Sem | Keputusan | …) */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr > :nth-child(3) { padding-left: 8px !important; padding-right: 8px !important; text-align: center !important; } /* Keputusan column; even padding so it truly centres */
+/* Tahun/Sem values are th cells (label colour by default); show them as values */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr:has(> td) > th { color: var(--text); }
+/* semester subject tables in Pelan Pengajian (5-column header: Kod | Nama | type | Jam Kredit | Keputusan):
+   keep the original bordered grid, in the new colours (the other detail tables use plain rows) */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) th, .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td { width: auto; padding: 6px !important; border: 1px solid var(--border) !important; text-align: center !important; vertical-align: middle; font-size: 12px; } /* compact like the original (12px), so names fit on one line */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) th { background: #f4f4f5 !important; color: var(--text); font-weight: 600; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td { font-weight: 400; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td:nth-child(2) { text-align: left !important; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td:first-child { white-space: nowrap; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) tr:last-child > td { border-bottom: 1px solid var(--border) !important; background: #fafafa !important; font-weight: 600; } /* credit total row */
+/* exam grades wrapped by content.js: 3.00 and up green, below red */
+.ext-grade { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.ext-grade.good { background: #ecfdf5; color: #047857; }
+.ext-grade.low { background: #fef2f2; color: #b91c1c; }
 
 @media (max-width: 760px) {
   .std:has(> #contacts-right-col) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
@@ -628,3 +658,31 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #frmBorang input[type="submit"] { display: inline-block !important; padding: 11px 20px !important; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 #frmBorang input[type="submit"]:hover { background: var(--accent-hover); }
 #frmBorang input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* ---- Hantar Keputusan Peperiksaan form (pengajian.php). Scoped by its own hidden field: #frmBorang is also
+   the id of the email/contact forms on peribadi.php, which keep the site look. ---- */
+#frmBorang:has(> #kodPeringkat) .info2 { margin: 0 0 8px; padding: 14px 16px !important; border: 1px solid #bfdbfe; border-radius: 12px; background: var(--accent-soft) !important; font-size: 13px; }
+#frmBorang:has(> #kodPeringkat) .info2 h4 { margin: 0 0 4px; color: #1e3a8a; font-size: 14px; }
+#frmBorang:has(> #kodPeringkat) .info2 > br { display: inline; } /* the generic .info2 rule hides all <br>s; here they separate sentences */
+#frmBorang:has(> #kodPeringkat) .info2 > h4 + br, #frmBorang:has(> #kodPeringkat) .info2 img[src*="warning"] { display: none; }
+#frmBorang:has(> #kodPeringkat) .info2 u { text-decoration: none; }
+#frmBorang:has(> #kodPeringkat) font[color] { color: #b91c1c; }
+#frmBorang:has(> #kodPeringkat) td .info2 { margin-top: 8px; padding: 10px 12px !important; font-size: 12px; }
+#frmBorang:has(> #kodPeringkat) td em { font-style: normal; font-size: 12px; }
+/* action icons (view / edit) next to each result */
+#frmBorang:has(> #kodPeringkat) td a + a { margin-left: 6px; }
+/* "HANTAR KEPUTUSAN PEPERIKSAAN" title row is a td (gets the title bar via the th[colspan] rule above) */
+#content #frmBorang:has(> #kodPeringkat) .data-table td[colspan]:has(> center) { padding: 20px 0 8px !important; border-bottom: 0 !important; }
+/* file picker: style the browser's tiny "Choose file" button like a secondary button */
+#frmBorang:has(> #kodPeringkat) input[type="file"] { font-size: 13px; }
+#frmBorang:has(> #kodPeringkat) input[type="file"]::file-selector-button { margin-right: 10px; padding: 8px 14px; border: 0; border-radius: 8px; background: #fff; box-shadow: inset 0 0 0 1px #d4d4d8; font: inherit; font-weight: 600; cursor: pointer; }
+#frmBorang:has(> #kodPeringkat) input[type="file"]::file-selector-button:hover { background: #f4f4f5; }
+/* dropdowns fill the row; the Sesi row has two (session no. + year): small one floats left, year fills the rest */
+#frmBorang:has(> #kodPeringkat) td > select { display: block; width: 100% !important; max-width: none; box-sizing: border-box; }
+#frmBorang:has(> #kodPeringkat) td > select:has(+ select) { float: left; width: 30% !important; }
+#frmBorang:has(> #kodPeringkat) td > select + select { width: calc(70% - 8px) !important; margin-left: calc(30% + 8px); } /* auto would keep the select at its natural width */
+#frmBorang:has(> #kodPeringkat) input[type="checkbox"] { width: 16px; height: 16px; margin-right: 6px; vertical-align: -3px; }
+/* submit has class "buttons-set", so undo the login-row flex rules and make it the primary button */
+#frmBorang:has(> #kodPeringkat) input[type="submit"] { display: inline-block !important; padding: 11px 20px !important; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+#frmBorang:has(> #kodPeringkat) input[type="submit"]:hover { background: var(--accent-hover); }
+#frmBorang:has(> #kodPeringkat) input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }

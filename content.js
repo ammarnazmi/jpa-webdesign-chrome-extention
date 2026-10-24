@@ -21,7 +21,7 @@ if (content) {
   let last = content.innerHTML;
   new MutationObserver(() => {
     if (content.querySelector(':scope > center img[src*="loadbar"]')) content.innerHTML = last;
-    else { addHelpPlaceholders(); markStatuses(); last = content.innerHTML; }
+    else { addHelpPlaceholders(); markStatuses(); markGrades(); last = content.innerHTML; }
   }).observe(content, { childList: true });
 }
 
@@ -39,19 +39,37 @@ function addHelpPlaceholders() {
 }
 addHelpPlaceholders();
 
-// Activity table (home > Aktiviti MySELF): the Status column is plain text. Wrap it in a pill and pick a colour
-// from its words; "TIDAK LULUS" is checked before "LULUS". Unknown statuses get the neutral pill.
+// Column 3 of a table with a header row holds a status or a grade. Each helper only touches tables whose
+// column-3 header names it, because payment pages (bayaran.php, kutipan.php) have amounts in column 3.
+const tablesWithColumn3 = (header) => [...document.querySelectorAll('#content table.data-table')]
+  .filter((t) => header.test(t.querySelector('tr > th:nth-child(3)')?.textContent || ''));
+const wrapIn = (td, className) => {
+  const pill = document.createElement('span');
+  pill.className = className;
+  pill.append(...td.childNodes);
+  td.append(pill);
+};
+
+// Activity table (home > Aktiviti MySELF, header "Status"): wrap the status in a pill coloured by its words;
+// "TIDAK LULUS" is checked before "LULUS". Unknown statuses get the neutral pill.
 function markStatuses() {
-  document.querySelectorAll('#content table.data-table:has(th:nth-child(3)) td:nth-child(3):not(:has(.ext-status))').forEach((td) => {
+  tablesWithColumn3(/Status/i).flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-status))')]).forEach((td) => {
     const text = td.textContent.toUpperCase();
     const kind = /TIDAK|TOLAK|GAGAL|BATAL/.test(text) ? 'fail' : /SAH|LULUS|SELESAI/.test(text) ? 'ok' : /PROSES|SEMAK|TANGGUH|BARU/.test(text) ? 'pending' : '';
-    const pill = document.createElement('span');
-    pill.className = `ext-status ${kind}`;
-    pill.append(...td.childNodes);
-    td.append(pill);
+    wrapIn(td, `ext-status ${kind}`);
   });
 }
 markStatuses();
+
+// Exam results (pengajian.php, header "Keputusan"): a plain grade such as 3.5300 becomes a pill,
+// 3.00 and up green, below red.
+function markGrades() {
+  tablesWithColumn3(/Keputusan/i).flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-grade))')]).forEach((td) => {
+    const text = td.textContent.trim();
+    if (/^\d+(\.\d+)?$/.test(text)) wrapIn(td, `ext-grade ${parseFloat(text) >= 3 ? 'good' : 'low'}`);
+  });
+}
+markGrades();
 
 // Side menu (help and home pages): the site never marks the open section. Use ?page= when it names a link
 // (e.g. bantuan.php?page=emelPengaktifan), otherwise the first link, which is what the page shows by default.
