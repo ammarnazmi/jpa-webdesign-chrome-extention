@@ -598,14 +598,18 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr > :nth-child(3) { padding-left: 8px !important; padding-right: 8px !important; text-align: center !important; } /* Keputusan column; even padding so it truly centres */
 /* Tahun/Sem values are th cells (label colour by default); show them as values */
 .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr:has(> td) > th { color: var(--text); }
-/* semester subject tables in Pelan Pengajian (5-column header: Kod | Nama | type | Jam Kredit | Keputusan):
-   keep the original bordered grid, in the new colours (the other detail tables use plain rows) */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) th, .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td { width: auto; padding: 6px !important; border: 1px solid var(--border) !important; text-align: center !important; vertical-align: middle; font-size: 12px; } /* compact like the original (12px), so names fit on one line */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) th { background: #f4f4f5 !important; color: var(--text); font-weight: 600; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td { font-weight: 400; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td:nth-child(2) { text-align: left !important; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) td:first-child { white-space: nowrap; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(5)) tr:last-child > td { border-bottom: 1px solid var(--border) !important; background: #fafafa !important; font-weight: 600; } /* credit total row */
+/* grid tables: a header row of 4+ th and plain td rows, i.e. the semester subject tables (Pelan Pengajian) and
+   the payment table (bayaran.php). Keep the original bordered grid, in the new colours. Rows that start with th
+   (exam results, label/value tables) are excluded by :not(:has(tr > th + td)) and keep the plain-row style. */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th, .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { width: auto; padding: 6px !important; border: 1px solid var(--border) !important; text-align: center !important; vertical-align: middle; font-size: 12px; } /* compact like the original (12px), so names fit on one line */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th { background: #f4f4f5 !important; color: #000; font-weight: 600; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { color: #000; font-weight: 400; } /* color: the Aktiviti rules from main would grey the first/last columns */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) tr:last-child > td { border-bottom: 1px solid var(--border) !important; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) { margin-top: 16px !important; } /* on bayaran.php it directly follows a label table */
+/* the descriptive column is left-aligned: Nama Subjek (5 columns) or Perihal Transaksi (4 columns) */
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:nth-child(2), .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):not(:has(tr > th:nth-child(5))) td:first-child { text-align: left !important; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:first-child { white-space: nowrap; }
+.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) tr:last-child > td { background: #fafafa !important; font-weight: 600; } /* subject tables end with the credit total */
 /* exam grades wrapped by content.js: 3.00 and up green, below red */
 .ext-grade { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
 .ext-grade.good { background: #ecfdf5; color: #047857; }
