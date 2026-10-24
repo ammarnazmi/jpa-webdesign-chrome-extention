@@ -14,6 +14,12 @@
       "matches": ["*://myself.jpa.gov.my/*"],
       "js": ["content.js"],
       "run_at": "document_end"
+    },
+    {
+      "matches": ["*://myself.jpa.gov.my/*"],
+      "js": ["no-popup.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ]
 }

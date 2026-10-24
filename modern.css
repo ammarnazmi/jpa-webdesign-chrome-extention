@@ -77,24 +77,41 @@ input, select, textarea, button { font-family: inherit !important; }
 #maincol a { color: var(--accent) !important; }
 #left-col, #maincol { float: none !important; width: auto !important; margin: 0 0 20px !important; display: flow-root !important; }
 #left-col > div { float: none !important; }
-.block-banner .block-content { text-align: left; margin: 0 !important; }
+/* The site floats/shrinks the banner block; make it span the column so it lines up with the login card */
+.block-banner, .block-banner .block-content { display: block !important; float: none !important; width: auto !important; margin: 0 !important; text-align: left !important; }
 
-/* "First time?" notice: a slim info strip like an MYDS callout */
+/* "First time?" notice: full-width info bar (MYDS callout) with the action as a button on the right.
+   The site's <a> is empty, so the icon is a background image and both text parts are generated. */
 .block-content #firsttime { position: static !important; width: auto !important; height: auto !important; background: none !important; }
 .block-content #firsttime a {
   width: auto !important;
   height: auto !important;
-  display: block;
-  padding: 14px 18px;
+  display: flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 12px 12px 48px;
   border: 1px solid #bfdbfe;
   border-radius: 12px;
-  background: var(--accent-soft);
-  color: #1e40af !important;
-  font-weight: 500;
+  background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5M12 8h.01'/%3E%3C/svg%3E") no-repeat 16px center / 20px;
+  color: #1e3a8a !important;
+  font-size: 14px;
   text-decoration: none !important;
 }
-.block-content #firsttime a:hover { background: #dbeafe; }
-#firsttime a::before { content: "\2139\FE0F  Kali pertama di MySELF? Daftar eSILA-ID anda di sini \2192"; }
+#firsttime a::before { content: "Kali pertama di MySELF? Daftar eSILA-ID dahulu untuk log masuk."; }
+#firsttime a::after {
+  content: "Daftar eSILA-ID \2192";
+  margin-left: auto;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .15s;
+}
+#firsttime a:hover::after { background: var(--accent-hover); }
+#firsttime a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 
 .std {
   background: var(--card);
@@ -164,10 +181,12 @@ fieldset legend { display: none; }
 .cms-home .registered-users > h3:first-of-type { font-size: 13px !important; color: var(--muted); margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--border); }
 .cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: var(--muted); }
 .cms-home .registered-users > h3:nth-of-type(2) { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 2px; }
-.cms-home .registered-users > p.required { text-align: left; margin: -4px 0 0 !important; }
+.cms-home .registered-users > h3:nth-of-type(2) + p { color: var(--muted); }
+/* Both fields of a two-field login are obviously required; the red note read like an error */
+.cms-home .registered-users .required { display: none; }
 
 /* Forms */
-.std ul.form-list { list-style: none; padding: 0; margin-top: 16px !important; }
+.std ul.form-list { list-style: none; padding: 0; margin: 16px 0 4px !important; }
 .form-list li { margin: 0 0 16px !important; }
 .form-list li > br { display: none; }
 .form-list label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
@@ -182,17 +201,22 @@ input.input-text, select, textarea {
   box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
   transition: border-color .15s, box-shadow .15s;
 }
+/* Chrome paints autofilled fields light blue; keep them white like the rest of the form */
+input.input-text:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset; -webkit-text-fill-color: var(--text); }
 input.input-text:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent) !important;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, .18);
 }
+input.input-text:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px #fff inset, 0 0 0 4px rgba(37, 99, 235, .18); }
 .required { color: #dc2626 !important; }
 p.required { font-size: 12px !important; }
 
 /* Buttons */
 .buttons-set { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; padding: 12px 0 0 !important; }
 .buttons-set .f-left { margin-right: auto; }
+/* the site's clearfix ::before/::after would become empty flex items and push the links apart */
+.buttons-set::before, .buttons-set::after { display: none !important; }
 button.button {
   background: var(--accent) !important;
   border: 0 !important;
@@ -207,7 +231,7 @@ button.button:hover { background: var(--accent-hover) !important; }
 button.button:active { transform: translateY(1px); }
 button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 /* Login card: full-width sign-in button, then two text links on one row (MYDS login pattern) */
-.cms-home .registered-users .buttons-set { gap: 14px 10px; justify-content: space-between; padding: 16px 0 0 !important; }
+.cms-home .registered-users .buttons-set { gap: 16px 10px; justify-content: space-between; margin: 0 !important; padding: 8px 0 0 !important; }
 .cms-home .registered-users #send { order: -1; flex-basis: 100%; padding: 13px 18px; }
 .cms-home .registered-users .buttons-set .f-left { order: 1; float: none; margin: 0; font-size: 14px; font-weight: 500; text-decoration: none !important; }
 .cms-home .registered-users #lupa { order: 2; background: none !important; box-shadow: none; padding: 0; }
