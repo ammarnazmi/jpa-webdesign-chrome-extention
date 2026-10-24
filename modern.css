@@ -690,3 +690,27 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #frmBorang:has(> #kodPeringkat) input[type="submit"] { display: inline-block !important; padding: 11px 20px !important; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 #frmBorang:has(> #kodPeringkat) input[type="submit"]:hover { background: var(--accent-hover); }
 #frmBorang:has(> #kodPeringkat) input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* ---- Bayaran Balik overview (kutipan.php): the two print actions become the same outlined button ----
+   "CETAK NOTIS TUNTUTAN" is a <button> with an inline blue background next to a 24px printer gif;
+   "CETAK REKOD BAYARAN BALIK" is a link in a table row whose empty th pushed it 176px to the right */
+#content div.button > img[src*="print"], #rekod-bayaran-balik td[colspan] > img[src*="print"] { display: none; }
+#rekod-bayaran-balik tr:has(> td[colspan] > a) > th { display: none; }
+#content div.button:has(> img[src*="print"]) > button, #rekod-bayaran-balik td[colspan] > a {
+  display: inline-block;
+  padding: 9px 14px 9px 38px !important;
+  border: 0;
+  border-radius: 10px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9V2h12v7'/%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/%3E%3Crect x='6' y='14' width='12' height='8'/%3E%3C/svg%3E") no-repeat 12px center / 18px !important;
+  box-shadow: inset 0 0 0 1px #d4d4d8;
+  color: var(--accent) !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+#content div.button:has(> img[src*="print"]) { margin: 12px 0 0 !important; padding: 0 !important; font-size: 0; } /* font-size 0: two &nbsp; after the hidden gif pushed the button 8px in */
+#content div.button:has(> img[src*="print"]) > button, #rekod-bayaran-balik td[colspan] > a { line-height: 20px; } /* same height for both */
+#content div.button:has(> img[src*="print"]) > button b, #rekod-bayaran-balik td[colspan] > a b { color: inherit; }
+#content div.button:has(> img[src*="print"]) > button:hover, #rekod-bayaran-balik td[colspan] > a:hover { background-color: var(--accent-soft) !important; }
+#content div.button:has(> img[src*="print"]) > button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
