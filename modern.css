@@ -258,6 +258,35 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
   margin: 14px 0 6px !important;
   box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
 }
+/* Replaces the hidden "PENTING" gif with a crisp badge */
+.account-login > img[src*="important"] + p::before {
+  content: "PENTING";
+  display: block;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+/* A notice's follow-up <p> (document link or signature) is a sibling in the HTML; join it to the card as its footer */
+.account-login > img[src*="important"] + p:has(+ p) { border-bottom: 0; border-radius: 12px 12px 0 0; margin-bottom: 0 !important; padding-bottom: 12px; }
+.account-login > img[src*="important"] + p + p {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid #f59e0b;
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+  padding: 0 20px 16px;
+  margin: 0 0 6px !important;
+}
+.account-login > img[src*="important"] + p + p:has(> b:only-child) { color: var(--muted); font-size: 13px; }
+.account-login > br { display: none; }
+/* underlined bold text looked like links; bold alone is enough emphasis */
+.account-login u { text-decoration: none; }
 .account-login > p > a[target="_blank"]:only-child {
   display: inline-block;
   padding: 6px 12px;
@@ -266,8 +295,10 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
   font-size: 13px;
   font-weight: 500;
   text-decoration: none !important;
+  transition: background .15s;
 }
 .account-login > p > a[target="_blank"]:only-child::after { content: " \2197"; }
+.account-login > p > a[target="_blank"]:only-child:hover { background: #dbeafe; }
 
 /* Tables (inner pages) */
 .data-table { border-collapse: collapse; width: 100%; }
