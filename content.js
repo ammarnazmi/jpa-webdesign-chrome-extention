@@ -21,7 +21,7 @@ if (content) {
   let last = content.innerHTML;
   new MutationObserver(() => {
     if (content.querySelector(':scope > center img[src*="loadbar"]')) content.innerHTML = last;
-    else { addHelpPlaceholders(); last = content.innerHTML; }
+    else { addHelpPlaceholders(); markStatuses(); last = content.innerHTML; }
   }).observe(content, { childList: true });
 }
 
@@ -38,6 +38,20 @@ function addHelpPlaceholders() {
   });
 }
 addHelpPlaceholders();
+
+// Activity table (home > Aktiviti MySELF): the Status column is plain text. Wrap it in a pill and pick a colour
+// from its words; "TIDAK LULUS" is checked before "LULUS". Unknown statuses get the neutral pill.
+function markStatuses() {
+  document.querySelectorAll('#content table.data-table:has(th:nth-child(3)) td:nth-child(3):not(:has(.ext-status))').forEach((td) => {
+    const text = td.textContent.toUpperCase();
+    const kind = /TIDAK|TOLAK|GAGAL|BATAL/.test(text) ? 'fail' : /SAH|LULUS|SELESAI/.test(text) ? 'ok' : /PROSES|SEMAK|TANGGUH|BARU/.test(text) ? 'pending' : '';
+    const pill = document.createElement('span');
+    pill.className = `ext-status ${kind}`;
+    pill.append(...td.childNodes);
+    td.append(pill);
+  });
+}
+markStatuses();
 
 // Side menu (help and home pages): the site never marks the open section. Use ?page= when it names a link
 // (e.g. bantuan.php?page=emelPengaktifan), otherwise the first link, which is what the page shows by default.
