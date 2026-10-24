@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "MySELF JPA Modern",
+  "version": "1.0.0",
+  "description": "A modern, cleaner look for myself.jpa.gov.my.",
+  "content_scripts": [
+    {
+      "matches": ["*://myself.jpa.gov.my/*"],
+      "css": ["modern.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

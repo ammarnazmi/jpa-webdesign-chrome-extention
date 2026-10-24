@@ -1,0 +1,207 @@
+/* Overrides the site's 2009-era fixed 960px layout. Chrome loads extension CSS before the page's,
+   so any property the site also sets needs !important to win. */
+:root {
+  --navy: #0f2a44;
+  --navy-2: #173d63;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+}
+
+body {
+  background: var(--bg) !important;
+  color: var(--text);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+input, select, textarea, button { font-family: inherit !important; }
+
+/* Header */
+#header {
+  width: auto !important;
+  height: auto !important;
+  background: linear-gradient(120deg, var(--navy), var(--navy-2)) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 12px max(16px, calc((100% - 1120px) / 2));
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .15);
+}
+#top { height: auto !important; }
+#logo { float: none !important; margin: 0 !important; max-width: 100%; }
+#menu { height: auto !important; margin: 0 !important; }
+#menu ul { display: flex; flex-wrap: wrap; gap: 6px; list-style: none !important; margin: 0; padding: 0; }
+#menu li { float: none !important; width: auto !important; height: auto !important; background: none !important; }
+#menu li a {
+  width: auto !important;
+  height: auto !important;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: none !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  transition: background .15s;
+}
+#menu li a:hover { background: rgba(255, 255, 255, .12) !important; }
+#menu li.on a { background: rgba(255, 255, 255, .18) !important; }
+#menu li strong, #menu li em { float: none !important; display: block !important; width: auto !important; margin: 0 !important; }
+#menu li strong { font-size: 14px !important; }
+#menu li em { color: rgba(255, 255, 255, .7) !important; font-size: 12px !important; }
+
+/* Main layout */
+#main {
+  position: static !important;
+  float: none !important;
+  width: auto !important;
+  max-width: 1120px;
+  margin: 28px auto !important;
+  padding: 0 16px;
+  background: none !important;
+  box-sizing: border-box;
+  display: flow-root;
+}
+#maincol a { color: var(--accent) !important; }
+#left-col, #maincol { float: none !important; width: auto !important; margin: 0 0 20px !important; display: flow-root !important; }
+#left-col > div { float: none !important; }
+.block-banner .block-content { text-align: left; }
+.block-content #firsttime { position: static !important; width: auto !important; height: auto !important; background: none !important; }
+.block-content #firsttime a {
+  width: auto !important;
+  height: auto !important;
+  display: block;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  background: linear-gradient(120deg, var(--accent), #7c3aed);
+  color: #fff !important;
+  font-weight: 600;
+  text-decoration: none !important;
+  box-shadow: var(--shadow);
+}
+#firsttime a::before { content: "Kali pertama? Daftar eSILA-ID anda di sini \2192"; }
+
+.std {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px !important;
+}
+.page-title h2 { font-size: 24px !important; font-weight: 700; margin-bottom: 16px; }
+.std h3 { font-size: 17px !important; font-weight: 650; color: var(--navy); margin: 12px 0 8px; }
+.std p { margin: 0 0 10px !important; }
+.std ul:not(.form-list) { padding-left: 20px; list-style: disc; }
+.std ul:not(.form-list) li { margin: 2px 0; }
+fieldset { border: 0 !important; padding: 0 !important; margin: 0 !important; min-width: 0; }
+fieldset legend { display: none; }
+
+/* Login: two columns side by side, stacked on narrow screens */
+.col2-set { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+.col2-set .col-1, .col2-set .col-2 { width: auto !important; }
+.col2-set:has(> .col-2:only-child) { grid-template-columns: 1fr; }
+.registered-users {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+@media (max-width: 760px) {
+  .col2-set { grid-template-columns: minmax(0, 1fr); }
+  .std { padding: 20px !important; }
+}
+
+/* Forms */
+.std ul.form-list { list-style: none; padding: 0; }
+.form-list li { margin: 0 0 14px !important; }
+.form-list label { font-weight: 600; font-size: 14px; }
+.form-list input.input-text { width: 100% !important; box-sizing: border-box; }
+input.input-text, select, textarea {
+  max-width: 100%;
+  padding: 10px 12px !important;
+  margin-top: 4px;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 15px !important;
+  transition: border-color .15s, box-shadow .15s;
+}
+input.input-text:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .2);
+}
+.required { color: #dc2626 !important; }
+p.required { font-size: 13px !important; }
+
+/* Buttons */
+.buttons-set { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; padding: 12px 0 0 !important; }
+.buttons-set .f-left { margin-right: auto; }
+button.button {
+  background: var(--accent) !important;
+  border: 0 !important;
+  border-radius: 10px;
+  padding: 10px 18px;
+  margin: 0 !important;
+  cursor: pointer;
+  transition: background .15s, transform .05s;
+}
+button.button span { color: #fff !important; font-size: 14px !important; font-weight: 600 !important; padding: 0 !important; }
+button.button:hover { background: var(--accent-hover) !important; }
+button.button:active { transform: translateY(1px); }
+#lupa { background: #e2e8f0 !important; }
+#lupa span { color: var(--text) !important; }
+#lupa:hover { background: #cbd5e1 !important; }
+
+/* Announcements: the warning gif sits before each <p>, give each notice a soft callout look */
+.account-login > img[src*="important"] { display: none; }
+.account-login > img[src*="important"] + p {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 12px 0 6px;
+}
+
+/* Tables (inner pages) */
+.data-table { border-collapse: collapse; width: 100%; }
+.data-table th { background: #f8fafc; border-color: var(--border) !important; }
+.data-table td { border-color: var(--border) !important; }
+
+/* Footer */
+#white-footer, #footer { float: none !important; width: auto !important; height: auto !important; }
+#white-footer {
+  background: none !important;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 8px 0 20px !important;
+  font-family: inherit !important;
+}
+#white-footer #jatajpa { margin: 0 !important; flex: none; }
+#white-footer #penafian { width: auto !important; margin: 0 !important; font-size: 12px !important; color: var(--muted) !important; }
+#footer {
+  background: var(--navy) !important;
+  border: 0 !important;
+  border-radius: var(--radius);
+  padding: 24px 0 !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+}
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; background: none !important; padding: 0 24px !important; }
+.footer > div { flex-basis: 100%; }
+.footer ul { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: flex-start; }
+.footer ul li { border: 0 !important; padding: 0 !important; }
+.footer address { font-style: normal; text-align: right; }
+
+/* Modalbox dialogs */
+#MB_overlay { background: rgba(15, 23, 42, .55) !important; backdrop-filter: blur(2px); }
+#MB_window { border-radius: var(--radius) !important; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, .3) !important; max-width: calc(100vw - 32px); }
+#MB_frame { border: 0 !important; }
+#MB_header { background: var(--navy) !important; border: 0 !important; padding: 12px 16px !important; }
+#MB_caption, #MB_close { color: #fff !important; }
