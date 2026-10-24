@@ -528,3 +528,59 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 /* Modalbox flashes "Please wait. Loading..." before content that arrives in ~0.1s (the help-page
    placeholder is handled in content.js) */
 #MB_loading { display: none !important; }
+
+/* ---- Home page after login (home.php) ---- */
+/* top links under the logo (Map Locator | Tukar Kata Laluan | Log Keluar) */
+#toplinks { float: none !important; margin-top: 6px; }
+#toplinks ul { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+#toplinks li { float: none !important; padding: 0 !important; border: 0 !important; }
+#toplinks a { color: rgba(255, 255, 255, .7) !important; font-size: 12px; text-decoration: none !important; }
+#toplinks a:hover { color: #fff !important; }
+
+/* profile photo: content.js moves the iframe from its absolute spot over the content into the sidebar */
+#left-col > #gambar { position: static !important; display: block; margin: 0 auto 16px; padding: 8px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+
+/* welcome banner: image title + "Hello!" badge become text */
+#top_announce { float: none !important; width: auto !important; text-align: left !important; padding: 0 0 20px !important; margin-bottom: 4px; border-bottom: 1px solid var(--border); }
+#top_announce > * { display: none !important; }
+#top_announce::before { content: "Selamat Datang ke MySELF"; display: block; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+#top_announce::after { content: "One-Stop-Centre bagi pengurusan penajaan JPA anda!"; display: block; margin-top: 2px; color: var(--muted); }
+
+/* announcements: the "Pengumuman" tab image becomes a heading; entries split by lines instead of spacer bars */
+#feat-header { float: none !important; width: auto !important; height: auto !important; margin: 20px 0 0 !important; border: 0 !important; background: none !important; }
+#feat-header::before { content: "Pengumuman"; display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 15px; font-weight: 600; }
+#featured:empty, #feat-header-bar { display: none !important; }
+#artguide-contain { float: none !important; width: auto !important; margin: 0 !important; padding: 16px 0; font: inherit !important; }
+#artguide-contain + #feat-header-bar + #artguide-contain { border-top: 1px solid var(--border); }
+#artguide-contain h2 { padding: 0 !important; margin: 0 0 8px; font-size: 16px !important; line-height: 1.4; }
+#artguide-contain h2 font[color] { color: var(--text); }
+#artguide-contain p { width: auto !important; /* site sets inline width:80% */ margin: 0 0 8px !important; color: #3f3f46 !important; font-size: 14px !important; }
+/* keep lines the site colours red itself (<p style="color:red">, e.g. "Kemaskini 15 Disember 2023"); deeper red for contrast */
+#artguide-contain p[style*="red"] { color: #dc2626 !important; }
+#artguide-contain p > b { font-weight: 400; } /* the site bolds whole paragraphs, so nothing stood out */
+/* "Dipaparkan dari ... hingga ..." date line: inline #999 (2.8:1 contrast) and a 10px indent on an <h6> */
+#artguide-contain > h6 { margin: 0 0 8px !important; color: #52525b !important; font-size: 12px; font-weight: 500; }
+
+/* ---- Personal details page (peribadi.php): details column + "Maklumat Lanjut" contact column ---- */
+.std:has(> #contacts-right-col) { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: 24px; align-items: start; }
+.std:has(> #contacts-right-col) > #messages_product_view { grid-column: 1 / -1; }
+/* the details wrapper has an inline float:left; width:500px */
+.std:has(> #contacts-right-col) > div:has(> #content) { float: none !important; width: auto !important; }
+#contacts-right-col { float: none !important; width: auto !important; margin: 0 !important; padding: 20px !important; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card) !important; font-size: 13px; }
+#contacts-right-col h2 { margin: 0 0 12px !important; color: var(--text) !important; font-size: 15px !important; }
+
+/* label/value tables: muted labels, plain rows split by lines, no cell borders (scoped: #content also exists on the help/home pages) */
+.std:has(> #contacts-right-col) #content h3 > img.ikon { display: none; }
+.std:has(> #contacts-right-col) #content h3 { margin: 28px 0 8px; font-size: 18px !important; font-weight: 700; }
+.std:has(> #contacts-right-col) #content h3:first-child { margin-top: 0; }
+.std:has(> #contacts-right-col) #content > br { display: none; }
+.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; }
+.std:has(> #contacts-right-col) #content .data-table th, .std:has(> #contacts-right-col) #content .data-table td { padding: 12px 16px 12px 0 !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; vertical-align: baseline; text-align: left; line-height: 1.5; }
+.std:has(> #contacts-right-col) #content .data-table td { font-size: 14px; font-weight: 500; }
+.std:has(> #contacts-right-col) #content .data-table th { width: 160px; white-space: normal !important; color: var(--muted); font-size: 13px; }
+.std:has(> #contacts-right-col) #content .data-table th strong { font-weight: 500; }
+.std:has(> #contacts-right-col) #content .data-table tr:last-child > * { border-bottom: 0 !important; }
+
+@media (max-width: 760px) {
+  .std:has(> #contacts-right-col) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+}

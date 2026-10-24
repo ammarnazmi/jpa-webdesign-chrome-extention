@@ -25,6 +25,11 @@ if (content) {
   }).observe(content, { childList: true });
 }
 
+// Home page: the profile photo iframe is absolutely positioned over the content; put it at the top of the sidebar.
+const photo = document.getElementById('gambar');
+const sidebar = document.getElementById('left-col');
+if (photo && sidebar) sidebar.prepend(photo);
+
 // Help forms have no placeholder text; add hints (on load and whenever a help section is swapped in).
 function addHelpPlaceholders() {
   const hints = { nokp: 'Masukkan eSILA-ID', katalaluan: 'Masukkan kata laluan', nokpLama: 'Masukkan No KP Lama' };
@@ -34,11 +39,12 @@ function addHelpPlaceholders() {
 }
 addHelpPlaceholders();
 
-// Help side menu: the site never marks the open section. Mark it from ?page= (default Soalan Lazim) and on click.
+// Side menu (help and home pages): the site never marks the open section. Use ?page= when it names a link
+// (e.g. bantuan.php?page=emelPengaktifan), otherwise the first link, which is what the page shows by default.
 const navLinks = [...document.querySelectorAll('ul#nav a')];
 if (navLinks.length) {
   const setActive = (active) => navLinks.forEach((a) => (a === active ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
-  const page = new URLSearchParams(location.search).get('page') || 'soalanLazim';
-  setActive(navLinks.find((a) => a.getAttribute('href').includes(`bantuan_${page}.php`)));
+  const page = new URLSearchParams(location.search).get('page');
+  setActive((page && navLinks.find((a) => a.getAttribute('href')?.includes(`_${page}.php`))) || navLinks[0]);
   navLinks.forEach((a) => a.addEventListener('click', () => setActive(a)));
 }
