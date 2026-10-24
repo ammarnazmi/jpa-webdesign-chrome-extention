@@ -305,31 +305,52 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 .data-table th { background: #fafafa; border-color: var(--border) !important; }
 .data-table td { border-color: var(--border) !important; }
 
-/* Footer */
+/* Footer: disclaimer row on the page background, then one dark block (address | links, visitor count below) */
 #white-footer, #footer { float: none !important; width: auto !important; height: auto !important; }
 #white-footer {
   background: none !important;
   display: flex;
   gap: 20px;
   align-items: center;
-  margin: 8px 0 20px !important;
+  margin: 12px 0 24px !important;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
   font-family: inherit !important;
 }
-#white-footer #jatajpa { margin: 0 !important; flex: none; }
-#white-footer #penafian { width: auto !important; margin: 0 !important; font-size: 12px !important; color: var(--muted) !important; }
+#white-footer #jatajpa { margin: 0 !important; flex: none; width: 96px !important; height: 44px !important; background-size: contain !important; }
+#white-footer #penafian { width: auto !important; max-width: 760px; margin: 0 !important; font-size: 12px !important; line-height: 1.6; color: var(--muted) !important; }
+#white-footer #penafian b { color: var(--text); }
 #footer {
   background: var(--navy) !important;
   border: 0 !important;
   border-radius: var(--radius);
-  padding: 24px 0 !important;
+  padding: 28px 0 20px !important;
   font-family: inherit !important;
   font-size: 13px !important;
+  color: #94a3b8 !important;
 }
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; background: none !important; padding: 0 24px !important; }
-.footer > div { flex-basis: 100%; }
-.footer ul { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: flex-start; }
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px 32px; background: none !important; padding: 0 28px !important; }
+/* the site's clearfix ::before/::after would become flex items and push the address off the right edge */
+.footer::before, .footer::after { display: none !important; }
+.footer address { order: 1; float: none !important; font-style: normal; text-align: left !important; line-height: 1.7; }
+.footer address b { color: #fff; font-size: 14px; }
+.footer ul { order: 2; float: none !important; display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 0 !important; }
 .footer ul li { border: 0 !important; padding: 0 !important; }
-.footer address { font-style: normal; text-align: right; }
+.footer ul li a { color: #e2e8f0 !important; }
+.footer ul li a:hover { color: #fff !important; }
+/* visitor count (one text node, inline-styled by the site): a highlighted strip in the header's gold accent */
+.footer > div {
+  order: 3;
+  flex-basis: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(252, 211, 77, .25);
+  border-radius: 10px;
+  background: rgba(252, 211, 77, .08);
+  color: #fcd34d !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: .01em;
+}
 
 /* Phones (needs the viewport tag that content.js adds) */
 @media (max-width: 760px) {
@@ -346,7 +367,6 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 
   .account-login > img[src*="important"] + p { padding: 14px 16px; }
   #white-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .footer address { text-align: left !important; }
 }
 
 /* Modalbox dialogs */
