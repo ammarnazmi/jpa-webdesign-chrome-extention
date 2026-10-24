@@ -21,7 +21,7 @@ if (content) {
   let last = content.innerHTML;
   new MutationObserver(() => {
     if (content.querySelector(':scope > center img[src*="loadbar"]')) content.innerHTML = last;
-    else { addHelpPlaceholders(); markGrades(); last = content.innerHTML; }
+    else { addHelpPlaceholders(); markStatuses(); markGrades(); last = content.innerHTML; }
   }).observe(content, { childList: true });
 }
 
@@ -39,19 +39,34 @@ function addHelpPlaceholders() {
 }
 addHelpPlaceholders();
 
-// Exam results (pengajian.php): column 3 holds a plain grade such as 3.5300. Wrap grades in a pill:
-// 3.00 and up green, below red. Only tables whose column-3 header is "Keputusan": payment pages (bayaran.php,
-// kutipan.php) also have numbers in column 3 (amounts), which must not look like grades.
+// Column 3 of a table with a header row holds a status or a grade. Each helper only touches tables whose
+// column-3 header names it, because payment pages (bayaran.php, kutipan.php) have amounts in column 3.
+const tablesWithColumn3 = (header) => [...document.querySelectorAll('#content table.data-table')]
+  .filter((t) => header.test(t.querySelector('tr > th:nth-child(3)')?.textContent || ''));
+const wrapIn = (td, className) => {
+  const pill = document.createElement('span');
+  pill.className = className;
+  pill.append(...td.childNodes);
+  td.append(pill);
+};
+
+// Activity table (home > Aktiviti MySELF, header "Status"): wrap the status in a pill coloured by its words;
+// "TIDAK LULUS" is checked before "LULUS". Unknown statuses get the neutral pill.
+function markStatuses() {
+  tablesWithColumn3(/Status/i).flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-status))')]).forEach((td) => {
+    const text = td.textContent.toUpperCase();
+    const kind = /TIDAK|TOLAK|GAGAL|BATAL/.test(text) ? 'fail' : /SAH|LULUS|SELESAI/.test(text) ? 'ok' : /PROSES|SEMAK|TANGGUH|BARU/.test(text) ? 'pending' : '';
+    wrapIn(td, `ext-status ${kind}`);
+  });
+}
+markStatuses();
+
+// Exam results (pengajian.php, header "Keputusan"): a plain grade such as 3.5300 becomes a pill,
+// 3.00 and up green, below red.
 function markGrades() {
-  const gradeTables = [...document.querySelectorAll('#content table.data-table')]
-    .filter((t) => /Keputusan/i.test(t.querySelector('tr > th:nth-child(3)')?.textContent || ''));
-  gradeTables.flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-grade))')]).forEach((td) => {
+  tablesWithColumn3(/Keputusan/i).flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-grade))')]).forEach((td) => {
     const text = td.textContent.trim();
-    if (!/^\d+(\.\d+)?$/.test(text)) return;
-    const pill = document.createElement('span');
-    pill.className = `ext-grade ${parseFloat(text) >= 3 ? 'good' : 'low'}`;
-    pill.append(...td.childNodes);
-    td.append(pill);
+    if (/^\d+(\.\d+)?$/.test(text)) wrapIn(td, `ext-grade ${parseFloat(text) >= 3 ? 'good' : 'low'}`);
   });
 }
 markGrades();
