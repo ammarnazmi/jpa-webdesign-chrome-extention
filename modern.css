@@ -179,8 +179,8 @@ fieldset legend { display: none; }
 .cms-home .registered-users > br, .cms-home .registered-users > p:empty { display: none; }
 .cms-home .registered-users > h3:first-of-type,
 .cms-home .registered-users > h3:first-of-type + p { order: 2; }
-.cms-home .registered-users > h3:first-of-type { font-size: 13px !important; color: var(--muted); margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--border); }
-.cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: var(--muted); }
+.cms-home .registered-users > h3:first-of-type { font-size: 13px !important; color: #3f3f46; margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--border); }
+.cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: #52525b; }
 .cms-home .registered-users > h3:nth-of-type(2) { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 2px; }
 .cms-home .registered-users > h3:nth-of-type(2) + p { color: var(--muted); }
 /* Both fields of a two-field login are obviously required; the red note read like an error */
@@ -372,6 +372,47 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 /* Modalbox dialogs */
 #MB_overlay { background: rgba(15, 23, 42, .55) !important; backdrop-filter: blur(2px); }
 #MB_window { border-radius: var(--radius) !important; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, .3) !important; max-width: calc(100vw - 32px); }
-#MB_frame { border: 0 !important; }
+#MB_window, #MB_frame { background: var(--card) !important; }
+#MB_frame { border: 0 !important; padding-bottom: 0 !important; }
 #MB_header { background: var(--navy) !important; border: 0 !important; padding: 12px 16px !important; }
-#MB_caption, #MB_close { color: #fff !important; }
+#MB_caption, #MB_close { color: #fff !important; text-shadow: none !important; }
+#MB_caption { font-family: inherit !important; font-size: 16px !important; font-weight: 600 !important; }
+#MB_close { font-size: 20px !important; top: 10px !important; right: 14px !important; }
+#MB_content { border: 0 !important; padding: 20px 24px 24px !important; color: var(--text); font-size: 14px; line-height: 1.6; }
+/* Modalbox pins the window and clips overflow; the restyled registration form is taller than a laptop screen, so scroll inside */
+#MB_window { height: auto !important; }
+/* centre on screen; overrides the top:0 / computed left that Modalbox writes inline */
+#MB_window { top: 50% !important; left: 50% !important; transform: translate(-50%, -50%); }
+#MB_content { max-height: calc(100vh - 120px) !important; overflow-y: auto !important; }
+
+/* "Daftar eSILA-ID" info pop-up (daftar_info.php: a fixed 580px table with red <font> tags and gif bullets) */
+#MB_content table[width] { width: 100% !important; border-collapse: separate !important; border-spacing: 0 10px !important; }
+#MB_content td { vertical-align: top !important; }
+/* fixed height (not auto): Modalbox measures the window before the image loads */
+#MB_content img[src*="eSILA-ID"] { height: 150px !important; width: auto; max-width: 100%; object-fit: contain; margin-bottom: 12px; }
+#MB_content hr { border: 0; border-top: 1px solid var(--border); margin: 8px 0 0; }
+#MB_content hr ~ br, #MB_content td > br { display: none; }
+#MB_content font[color] { color: var(--text); font-weight: 600; }
+#MB_content td[width="30"] img { display: none; }
+#MB_content td[width="30"] { width: 20px !important; }
+/* dot centred on the first text line: half a line (0.8em at line-height 1.6) minus half the dot */
+#MB_content td[width="30"]::before { content: ""; display: block; width: 8px; height: 8px; margin-top: calc(.8em - 4px); border-radius: 50%; background: var(--accent); }
+#MB_content td.button { padding-top: 12px; }
+#MB_content td.button center { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+/* these <input>s carry class "buttons-set", so undo the login-row flex rules and style them as buttons */
+#MB_content input.buttons-set {
+  display: inline-block !important;
+  padding: 11px 18px !important;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #d4d4d8;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#MB_content input.buttons-set:hover { background: #f4f4f5; }
+#MB_content input.buttons-set + input.buttons-set { background: var(--accent); box-shadow: none; color: #fff; }
+#MB_content input.buttons-set + input.buttons-set:hover { background: var(--accent-hover); }
+#MB_content input.buttons-set:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
