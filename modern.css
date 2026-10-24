@@ -541,6 +541,11 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #toplinks { float: none !important; margin-top: 6px; }
 #toplinks ul { display: flex; flex-wrap: wrap; gap: 4px 14px; }
 #toplinks li { float: none !important; padding: 0 !important; border: 0 !important; }
+#toplinks li.first { display: none; } /* "Map Locator": removed on request; the first item in the list */
+/* "Log Keluar" (the item before the empty li.last): yellow button in the header's gold accent */
+#toplinks li:has(+ li.last) a { display: inline-block; padding: 3px 12px; border-radius: 8px; background: #fcd34d; color: var(--navy) !important; font-weight: 600; transition: background .15s; }
+#toplinks li:has(+ li.last) a:hover { background: #fde68a; color: var(--navy) !important; }
+#toplinks li:has(+ li.last) a:focus-visible { outline: 3px solid #fde68a; outline-offset: 2px; }
 #toplinks a { color: rgba(255, 255, 255, .7) !important; font-size: 12px; text-decoration: none !important; }
 #toplinks a:hover { color: #fff !important; }
 
@@ -569,54 +574,66 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #artguide-contain > h6 { margin: 0 0 8px !important; color: var(--label) !important; font-size: 12px; font-weight: 500; }
 
 /* ---- Personal details page (peribadi.php): details column + "Maklumat Lanjut" contact column ---- */
-.std:has(> #contacts-right-col) { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: 24px; align-items: start; }
-.std:has(> #contacts-right-col) > #messages_product_view { grid-column: 1 / -1; }
+.std:is(:has(> #contacts-right-col), .ext-details) { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: 24px; align-items: start; }
+.std:is(:has(> #contacts-right-col), .ext-details) > #messages_product_view { grid-column: 1 / -1; }
+/* perkhidmatan.php: content.js moves the "Maklumat Lanjut" card to the left column (under the side menu) and marks
+   the page .ext-details so these details-page styles still apply; the details card then fills the row */
+.std.ext-details:not(:has(> #contacts-right-col)) { grid-template-columns: minmax(0, 1fr); }
+#left-col > #contacts-right-col { display: flow-root !important; margin-top: 16px !important; } /* site sets display:inline; flow-root also contains the floated contact list */
+/* perkhidmatan.php label/value table ("Maklumat Perkhidmatan Semasa"): the original bordered grid, grey label cells.
+   #main + .ext-details so these outrank the plain-row details-table rules */
+#main .std.ext-details #content .data-table :is(th, td) { padding: 8px 10px !important; border: 1px solid var(--border) !important; vertical-align: top; }
+#main .std.ext-details #content .data-table th { width: 30%; background: #f4f4f5 !important; color: #000; font-weight: 600; }
+#main .std.ext-details #content .data-table th strong { font-weight: 600; }
+#main .std.ext-details #content .data-table td { background: #fff !important; color: #000; font-weight: 400; }
+#main .std.ext-details #content .data-table tr:last-child > * { border-bottom: 1px solid var(--border) !important; }
+#main .std.ext-details #content .data-table { margin-bottom: 16px !important; } /* space between stacked tables and before the disclaimer */
 /* the details wrapper has an inline float:left; width:500px */
-.std:has(> #contacts-right-col) > div:has(> #content) { float: none !important; width: auto !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) > div:has(> #content) { float: none !important; width: auto !important; }
 #contacts-right-col { float: none !important; width: auto !important; margin: 0 !important; padding: 20px !important; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card) !important; font-size: 13px; }
 #contacts-right-col h2 { margin: 0 0 12px !important; color: var(--text) !important; font-size: 15px !important; }
 
 /* label/value tables: muted labels, plain rows split by lines, no cell borders (scoped: #content also exists on the help/home pages) */
-.std:has(> #contacts-right-col) #content h3 > img.ikon { display: none; }
-.std:has(> #contacts-right-col) #content h3 { margin: 28px 0 8px; font-size: 18px !important; font-weight: 700; }
-.std:has(> #contacts-right-col) #content h3:first-child { margin-top: 0; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content h3 > img.ikon { display: none; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content h3 { margin: 28px 0 8px; font-size: 18px !important; font-weight: 700; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content h3:first-child { margin-top: 0; }
 /* only stray breaks after the tables; earlier ones separate lines like "INSTITUSI: …<br>BIDANG: …" */
-.std:has(> #contacts-right-col) #content > table ~ br { display: none; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content > table ~ br { display: none; }
 /* the result detail view starts with "<b>INSTITUSI</b>: value<br>…" directly in #content: muted labels */
-.std:has(> #contacts-right-col) #content > b { color: var(--label); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
-.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; margin: 0 !important; } /* site adds inline margin-left:20px */
-.std:has(> #contacts-right-col) #content .data-table th, .std:has(> #contacts-right-col) #content .data-table td { padding: 12px 16px 12px 0 !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; vertical-align: baseline; text-align: left; line-height: 1.5; }
-.std:has(> #contacts-right-col) #content .data-table td { font-size: 14px; font-weight: 500; }
-.std:has(> #contacts-right-col) #content .data-table th { width: 160px; white-space: normal !important; color: var(--label); font-size: 13px; }
-.std:has(> #contacts-right-col) #content .data-table th strong { font-weight: 500; }
-.std:has(> #contacts-right-col) #content .data-table tr:last-child > * { border-bottom: 0 !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content > b { color: var(--label); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table { border-collapse: collapse; margin: 0 !important; } /* site adds inline margin-left:20px */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th, .std:is(:has(> #contacts-right-col), .ext-details) #content .data-table td { padding: 12px 16px 12px 0 !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; vertical-align: baseline; text-align: left; line-height: 1.5; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table td { font-size: 14px; font-weight: 500; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th { width: 160px; white-space: normal !important; color: var(--label); font-size: 13px; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th strong { font-weight: 500; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table tr:last-child > * { border-bottom: 0 !important; }
 /* section title rows ("Keputusan Peperiksaan", "Maklumat Perjanjian"): a th spanning all columns with a
    <center> (or <strong>, e.g. "Rujukan"); turn it into a highlighted, left-aligned title bar */
-.std:has(> #contacts-right-col) #content .data-table th[colspan] { padding: 20px 0 8px !important; border-bottom: 0 !important; }
-.std:has(> #contacts-right-col) #content .data-table th[colspan] > :is(center, strong), #frmBorang:has(> #kodPeringkat) td[colspan] > center { display: block; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); color: #1e3a8a; font-size: 14px; font-weight: 700; text-align: left; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th[colspan] { padding: 20px 0 8px !important; border-bottom: 0 !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th[colspan] > :is(center, strong), #frmBorang:has(> #kodPeringkat) td[colspan] > center { display: block; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); color: #1e3a8a; font-size: 14px; font-weight: 700; text-align: left; }
 /* results tables (a 4-column header row: Tahun | Sem | Keputusan | …) */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr > :nth-child(3) { padding-left: 8px !important; padding-right: 8px !important; text-align: center !important; } /* Keputusan column; even padding so it truly centres */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)) tr > :nth-child(3) { padding-left: 8px !important; padding-right: 8px !important; text-align: center !important; } /* Keputusan column; even padding so it truly centres */
 /* Tahun/Sem values are th cells (label colour by default); show them as values */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)) tr:has(> td) > th { color: var(--text); }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)) tr:has(> td) > th { color: var(--text); }
 /* grid tables: a header row of 4+ th and plain td rows, i.e. the semester subject tables (Pelan Pengajian) and
    the payment table (bayaran.php). Keep the original bordered grid, in the new colours. Rows that start with th
    (exam results, label/value tables) are excluded by :not(:has(tr > th + td)) and keep the plain-row style. */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th, .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { width: auto; padding: 6px !important; border: 1px solid var(--border) !important; text-align: center !important; vertical-align: middle; font-size: 12px; } /* compact like the original (12px), so names fit on one line */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th { background: #f4f4f5 !important; color: #000; font-weight: 600; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { color: #000; font-weight: 400; } /* color: the Aktiviti rules from main would grey the first/last columns */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) tr:last-child > td { border-bottom: 1px solid var(--border) !important; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) { margin-top: 16px !important; } /* on bayaran.php it directly follows a label table */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th, .std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { width: auto; padding: 6px !important; border: 1px solid var(--border) !important; text-align: center !important; vertical-align: middle; font-size: 12px; } /* compact like the original (12px), so names fit on one line */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) th { background: #f4f4f5 !important; color: #000; font-weight: 600; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) td { color: #000; font-weight: 400; } /* color: the Aktiviti rules from main would grey the first/last columns */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) tr:last-child > td { border-bottom: 1px solid var(--border) !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)) { margin-top: 16px !important; } /* on bayaran.php it directly follows a label table */
 /* the descriptive column is left-aligned: Nama Subjek (5 columns) or Perihal Transaksi (4 columns) */
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:nth-child(2), .std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):not(:has(tr > th:nth-child(5))) td:first-child { text-align: left !important; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:first-child { white-space: nowrap; }
-.std:has(> #contacts-right-col) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) tr:last-child > td { background: #fafafa !important; font-weight: 600; } /* subject tables end with the credit total */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:nth-child(2), .std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):not(:has(tr > th:nth-child(5))) td:first-child { text-align: left !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) td:first-child { white-space: nowrap; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:has(tr > th:nth-child(4)):not(:has(tr > th + td)):has(tr > th:nth-child(5)) tr:last-child > td { background: #fafafa !important; font-weight: 600; } /* subject tables end with the credit total */
 /* exam grades wrapped by content.js: 3.00 and up green, below red */
 .ext-grade { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
 .ext-grade.good { background: #ecfdf5; color: #047857; }
 .ext-grade.low { background: #fef2f2; color: #b91c1c; }
 
 @media (max-width: 760px) {
-  .std:has(> #contacts-right-col) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+  .std:is(:has(> #contacts-right-col), .ext-details) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
 }
 
 /* ---- Activity table (home > Aktiviti MySELF): a data-table with a header row (Bil | Perkhidmatan | Status | Tempoh) ---- */
@@ -651,6 +668,8 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #frmBorang td[colspan="2"] center { padding-top: 12px; text-align: left; font-size: 13px; letter-spacing: .04em; } /* the <center>, not the td: the details-table td rules are more specific */
 #frmBorang .input-text, #frmBorang select { display: block; width: 100% !important; max-width: 360px; box-sizing: border-box; }
 #frmBorang td > .input-text + .input-text { margin-top: 8px; } /* e.g. address lines 2 and 3 share one cell */
+/* a bare <b> label before a dropdown in the same cell (e.g. "Matawang" under Gaji / Pendapatan): small form label */
+#frmBorang td > b:has(+ select) { display: block; margin: 12px 0 6px; color: var(--label); font-size: 13px; font-weight: 500; }
 /* a label with rowspan=2 (Alamat) spans two rows: no divider inside the group, tight gap where they meet.
    #content + .data-table so this outranks the details-table td rules */
 #content #frmBorang .data-table tr:has(> th[rowspan]) > td { border-bottom: 0 !important; padding-bottom: 4px !important; }
@@ -733,32 +752,42 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 /* ---- Bill tables on Semak Bil Tuntutan Bulanan (kutipan.php): label/value pairs (th td th td) and spanning row
    labels (th[colspan] + td, e.g. "Bayaran Tertunggak"). Keep the original bordered grid; the title-bar rule above
    would otherwise turn those spanning labels into blue bars. ---- */
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) :is(th, td) {
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) :is(th, td) {
   width: auto; padding: 8px 10px !important; border: 1px solid var(--border) !important; color: #000; font-size: 13px; text-align: left !important; vertical-align: middle; /* !important: the Aktiviti rule centres every 3rd column */
 }
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th { background: #f4f4f5 !important; font-weight: 600; }
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) td { background: #fff !important; font-weight: 400; }
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th strong { font-weight: 600; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th { background: #f4f4f5 !important; font-weight: 600; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) td { background: #fff !important; font-weight: 400; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th strong { font-weight: 600; }
 /* section titles ("Maklumat Bil Tuntutan", "Maklumat Bayaran"): plain centred grey row, not the blue bar */
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan]:has(> center) { text-align: center !important; }
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan] > :is(center, strong) {
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan]:has(> center) { text-align: center !important; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan] > :is(center, strong) {
   display: inline; padding: 0; border-radius: 0; background: none; color: #000; font-size: inherit; font-weight: 600; text-align: inherit;
 }
-.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) + .data-table { margin-top: -1px !important; } /* the two bill tables read as one grid */
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) + .data-table { margin-top: -1px !important; } /* the two bill tables read as one grid */
 /* "Cetak Bil Tuntutan Bulanan" (Semak Bil): an <input class="buttons-set"> inside a <center>, styled with the print buttons above */
 #content > center:has(> input.buttons-set[value^="Cetak"]) { margin: 16px 0 8px; text-align: left; }
 
 /* "Sila bayar di sini" bank links (Semak Bil): one th holding the text and six logo links with a <br> after the third.
    Make it a label plus even tiles; the text node is hidden (font-size 0) and re-added as a label. */
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) {
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) {
   display: flex; flex-wrap: wrap; justify-content: center; /* no gap: the &nbsp; runs between links are zero-width flex items and would each add one */ width: auto; padding: 12px 0 0 !important; border: 0 !important; background: none !important; font-size: 0;
 }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"])::before { content: "Sila bayar di sini:"; flex-basis: 100%; margin-bottom: 10px; text-align: center; color: var(--label); font-size: 13px; font-weight: 600; }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > br { display: none; }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a {
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"])::before { content: "Sila bayar di sini:"; flex-basis: 100%; margin-bottom: 10px; text-align: center; color: var(--label); font-size: 13px; font-weight: 600; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) > br { display: none; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) > a {
   display: flex; align-items: center; justify-content: center; width: 120px; height: 56px; box-sizing: border-box; margin: 0 5px 10px; padding: 8px 12px; /* even side margins so the rows centre exactly */
   border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: border-color .15s, box-shadow .15s;
 }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37, 99, 235, .15); }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
-.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a > img { width: auto !important; height: auto !important; max-width: 100%; max-height: 34px; object-fit: contain; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) > a:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37, 99, 235, .15); }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) > a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+.std:is(:has(> #contacts-right-col), .ext-details) #content .data-table th:has(> a > img[src*="maybank"]) > a > img { width: auto !important; height: auto !important; max-width: 100%; max-height: 34px; object-fit: contain; }
+
+/* ---- Tambah Maklumat Perkhidmatan Baru (perkhidmatan.php): "STATUS PEKERJAAN :" <b>, a dropdown and a raw
+   TERUSKAN submit in form[name=frmStatusKerja2]. Label on its own line, dropdown + primary button beside it. ---- */
+form[name="frmStatusKerja2"] { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; }
+form[name="frmStatusKerja2"] > b { flex-basis: 100%; color: var(--label); font-size: 13px; font-weight: 500; }
+form[name="frmStatusKerja2"] > br { display: none; }
+form[name="frmStatusKerja2"] > select { width: 280px; max-width: 100%; margin: 0; }
+form[name="frmStatusKerja2"] > input[type="submit"] { padding: 11px 20px; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+form[name="frmStatusKerja2"] > input[type="submit"]:hover { background: var(--accent-hover); }
+form[name="frmStatusKerja2"] > input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
