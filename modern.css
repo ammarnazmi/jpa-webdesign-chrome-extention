@@ -574,12 +574,24 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 .std:has(> #contacts-right-col) #content h3 { margin: 28px 0 8px; font-size: 18px !important; font-weight: 700; }
 .std:has(> #contacts-right-col) #content h3:first-child { margin-top: 0; }
 .std:has(> #contacts-right-col) #content > br { display: none; }
-.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; }
+.std:has(> #contacts-right-col) #content .data-table { border-collapse: collapse; margin: 0 !important; } /* site adds inline margin-left:20px */
 .std:has(> #contacts-right-col) #content .data-table th, .std:has(> #contacts-right-col) #content .data-table td { padding: 12px 16px 12px 0 !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; vertical-align: baseline; text-align: left; line-height: 1.5; }
 .std:has(> #contacts-right-col) #content .data-table td { font-size: 14px; font-weight: 500; }
 .std:has(> #contacts-right-col) #content .data-table th { width: 160px; white-space: normal !important; color: var(--muted); font-size: 13px; }
 .std:has(> #contacts-right-col) #content .data-table th strong { font-weight: 500; }
 .std:has(> #contacts-right-col) #content .data-table tr:last-child > * { border-bottom: 0 !important; }
+/* section title rows ("Keputusan Peperiksaan", "Maklumat Perjanjian"): a th spanning all columns with a
+   <center>; turn the <center> into a highlighted, left-aligned title bar */
+.std:has(> #contacts-right-col) #content .data-table th[colspan] { padding: 20px 0 8px !important; border-bottom: 0 !important; }
+.std:has(> #contacts-right-col) #content .data-table th[colspan] > center { display: block; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); color: #1e3a8a; font-size: 14px; font-weight: 700; text-align: left; }
+/* exam grades wrapped by content.js: 3.00 and up green, below red */
+.std:has(> #contacts-right-col) #content .data-table:has(.ext-grade) tr > :nth-child(3) { padding-left: 8px !important; padding-right: 8px !important; text-align: center !important; } /* Keputusan column; even padding so it truly centres */
+/* in the results table, Tahun/Sem values are th cells and inherited the muted label grey; darken them */
+.std:has(> #contacts-right-col) #content .data-table:has(.ext-grade) th { color: #52525b; }
+.std:has(> #contacts-right-col) #content .data-table:has(.ext-grade) tr:has(> td) > th { color: var(--text); }
+.ext-grade { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.ext-grade.good { background: #ecfdf5; color: #047857; }
+.ext-grade.low { background: #fef2f2; color: #b91c1c; }
 
 @media (max-width: 760px) {
   .std:has(> #contacts-right-col) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }

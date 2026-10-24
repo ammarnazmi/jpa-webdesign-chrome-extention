@@ -21,7 +21,7 @@ if (content) {
   let last = content.innerHTML;
   new MutationObserver(() => {
     if (content.querySelector(':scope > center img[src*="loadbar"]')) content.innerHTML = last;
-    else { addHelpPlaceholders(); last = content.innerHTML; }
+    else { addHelpPlaceholders(); markGrades(); last = content.innerHTML; }
   }).observe(content, { childList: true });
 }
 
@@ -38,6 +38,23 @@ function addHelpPlaceholders() {
   });
 }
 addHelpPlaceholders();
+
+// Exam results (pengajian.php): column 3 holds a plain grade such as 3.5300. Wrap grades in a pill:
+// 3.00 and up green, below red. Only tables whose column-3 header is "Keputusan": payment pages (bayaran.php,
+// kutipan.php) also have numbers in column 3 (amounts), which must not look like grades.
+function markGrades() {
+  const gradeTables = [...document.querySelectorAll('#content table.data-table')]
+    .filter((t) => /Keputusan/i.test(t.querySelector('tr > th:nth-child(3)')?.textContent || ''));
+  gradeTables.flatMap((t) => [...t.querySelectorAll('td:nth-child(3):not(:has(.ext-grade))')]).forEach((td) => {
+    const text = td.textContent.trim();
+    if (!/^\d+(\.\d+)?$/.test(text)) return;
+    const pill = document.createElement('span');
+    pill.className = `ext-grade ${parseFloat(text) >= 3 ? 'good' : 'low'}`;
+    pill.append(...td.childNodes);
+    td.append(pill);
+  });
+}
+markGrades();
 
 // Side menu (help and home pages): the site never marks the open section. Use ?page= when it names a link
 // (e.g. bantuan.php?page=emelPengaktifan), otherwise the first link, which is what the page shows by default.
