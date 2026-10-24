@@ -202,6 +202,12 @@ input.input-text, select, textarea {
   box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
   transition: border-color .15s, box-shadow .15s;
 }
+/* the native dropdown arrow ignores padding and hugs the edge; draw our own 12px in, like the text */
+select {
+  appearance: none;
+  padding-right: 36px !important;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 16px;
+}
 /* Chrome paints autofilled fields light blue; keep them white like the rest of the form */
 input.input-text:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset; -webkit-text-fill-color: var(--text); }
 input.input-text:focus, select:focus, textarea:focus {
@@ -416,3 +422,28 @@ button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
 #MB_content input.buttons-set + input.buttons-set { background: var(--accent); box-shadow: none; color: #fff; }
 #MB_content input.buttons-set + input.buttons-set:hover { background: var(--accent-hover); }
 #MB_content input.buttons-set:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* "Daftar Akaun Pemohon" registration form (daftar.php: a bordered 2-column table with gif stars and icons).
+   Each row becomes a stacked field: label on top, full-width input, hint below. */
+#daftarPemohon > br, #daftarPemohon td > br { display: none; }
+#daftarPemohon table, #daftarPemohon tbody, #daftarPemohon tr, #daftarPemohon td { display: block; width: auto !important; }
+#daftarPemohon td { padding: 0 !important; border: 0 !important; background: none !important; text-align: left !important; }
+#daftarPemohon tr { margin-bottom: 16px; background: none !important; }
+#daftarPemohon td:first-child b { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
+#daftarPemohon td + td { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+#daftarPemohon td + td > input, #daftarPemohon td + td > select { flex: 1 1 0; min-width: 0; width: auto !important; }
+#daftarPemohon td i { flex-basis: 100%; font-size: 12px; font-style: normal; color: var(--muted); }
+/* required: the star gif becomes a red asterisk after the label */
+#daftarPemohon img[src*="mandatory"] { display: none !important; }
+#daftarPemohon tr:has(img[src*="mandatory"]) td:first-child b::after { content: " *"; color: #dc2626; }
+#daftarPemohon font[color] { color: var(--muted); font-weight: 400; font-size: 12px; }
+#daftarPemohon font[color]::before { content: "* "; color: #dc2626; }
+/* info gif -> the same outline icon as the notice bar; its title tooltip and click alert still work */
+#daftarPemohon img[src*="info"] {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5M12 8h.01'/%3E%3C/svg%3E");
+  width: 18px; height: 18px; cursor: help;
+  position: absolute; right: 12px; top: 11px; /* inside the input, so every field has the same width */
+}
+#daftarPemohon td:has(img[src*="info"]) { position: relative; }
+#daftarPemohon td:has(img[src*="info"]) > input { padding-right: 40px !important; }
+#daftarPemohon td.button { padding-top: 4px !important; }
