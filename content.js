@@ -10,3 +10,6 @@ if (!document.querySelector('meta[name="viewport"]')) {
   viewport.content = 'width=device-width, initial-scale=1';
   document.head.append(viewport);
 }
+
+// Wrong-password message is a plain <div>; mark it as an alert so screen readers announce it.
+document.querySelector('.registered-users > div[style*="990000"]')?.setAttribute('role', 'alert');

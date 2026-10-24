@@ -183,6 +183,18 @@ fieldset legend { display: none; }
 .cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: #52525b; }
 .cms-home .registered-users > h3:nth-of-type(2) { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 2px; }
 .cms-home .registered-users > h3:nth-of-type(2) + p { color: var(--muted); }
+/* Wrong-password message: the site renders an inline-styled dark red bar (background:#990000); make it an alert box */
+.cms-home .registered-users > div[style*="990000"] {
+  margin: 0 0 4px;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v6M12 16.5h.01'/%3E%3C/svg%3E") no-repeat 12px center / 18px !important;
+  color: #991b1b !important;
+  text-align: left !important;
+  font-size: 14px;
+}
+.cms-home .registered-users > div[style*="990000"] b { font-weight: 500; }
 /* Both fields of a two-field login are obviously required; the red note read like an error */
 .cms-home .registered-users .required { display: none; }
 
