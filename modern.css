@@ -690,3 +690,75 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 #frmBorang:has(> #kodPeringkat) input[type="submit"] { display: inline-block !important; padding: 11px 20px !important; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 #frmBorang:has(> #kodPeringkat) input[type="submit"]:hover { background: var(--accent-hover); }
 #frmBorang:has(> #kodPeringkat) input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* ---- Bayaran Balik overview (kutipan.php): the two print actions become the same outlined button ----
+   "CETAK NOTIS TUNTUTAN" is a <button> with an inline blue background next to a 24px printer gif;
+   "CETAK REKOD BAYARAN BALIK" is a link in a table row whose empty th pushed it 176px to the right */
+#content div.button > img[src*="print"], #rekod-bayaran-balik td[colspan] > img[src*="print"] { display: none; }
+#rekod-bayaran-balik tr:has(> td[colspan] > a) > th { display: none; }
+#content div.button:has(> img[src*="print"]) > button, #rekod-bayaran-balik td[colspan] > a, #content > center > input.buttons-set[value^="Cetak"] {
+  display: inline-block !important;
+  padding: 9px 14px 9px 38px !important;
+  border: 0;
+  border-radius: 10px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9V2h12v7'/%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/%3E%3Crect x='6' y='14' width='12' height='8'/%3E%3C/svg%3E") no-repeat 12px center / 18px !important;
+  box-shadow: inset 0 0 0 1px #d4d4d8;
+  color: var(--accent) !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+#content div.button:has(> img[src*="print"]) { margin: 12px 0 0 !important; padding: 0 !important; font-size: 0; } /* font-size 0: two &nbsp; after the hidden gif pushed the button 8px in */
+#content div.button:has(> img[src*="print"]) > button, #rekod-bayaran-balik td[colspan] > a, #content > center > input.buttons-set[value^="Cetak"] { line-height: 20px; } /* same height for both */
+#content div.button:has(> img[src*="print"]) > button b, #rekod-bayaran-balik td[colspan] > a b { color: inherit; }
+#content div.button:has(> img[src*="print"]) > button:hover, #rekod-bayaran-balik td[colspan] > a:hover, #content > center > input.buttons-set[value^="Cetak"]:hover { background-color: var(--accent-soft) !important; }
+#content div.button:has(> img[src*="print"]) > button:focus-visible, #content > center > input.buttons-set[value^="Cetak"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* Loading state while a side-menu section loads (content.js sets aria-busy on #content and keeps the previous
+   section). Dim it and run a thin bar along the top of the card; both wait .15s so fast sections never flicker. */
+#content[aria-busy="true"] { position: relative; }
+#content > * { transition: opacity .2s; }
+#content[aria-busy="true"] > * { opacity: .45; pointer-events: none; transition-delay: .15s; }
+#content[aria-busy="true"]::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent) no-repeat -40% 0 / 40% 100%;
+  animation: ext-loading-bar 1.1s linear .15s infinite;
+}
+@keyframes ext-loading-bar { to { background-position: 140% 0; } }
+@media (prefers-reduced-motion: reduce) { #content[aria-busy="true"]::before { animation: none; background: var(--accent); opacity: .5; } }
+
+/* ---- Bill tables on Semak Bil Tuntutan Bulanan (kutipan.php): label/value pairs (th td th td) and spanning row
+   labels (th[colspan] + td, e.g. "Bayaran Tertunggak"). Keep the original bordered grid; the title-bar rule above
+   would otherwise turn those spanning labels into blue bars. ---- */
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) :is(th, td) {
+  width: auto; padding: 8px 10px !important; border: 1px solid var(--border) !important; color: #000; font-size: 13px; text-align: left !important; vertical-align: middle; /* !important: the Aktiviti rule centres every 3rd column */
+}
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th { background: #f4f4f5 !important; font-weight: 600; }
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) td { background: #fff !important; font-weight: 400; }
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th strong { font-weight: 600; }
+/* section titles ("Maklumat Bil Tuntutan", "Maklumat Bayaran"): plain centred grey row, not the blue bar */
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan]:has(> center) { text-align: center !important; }
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) th[colspan] > :is(center, strong) {
+  display: inline; padding: 0; border-radius: 0; background: none; color: #000; font-size: inherit; font-weight: 600; text-align: inherit;
+}
+.std:has(> #contacts-right-col) #content .data-table:is(:has(tr > th + td + th), :has(tr > th[colspan] + td)) + .data-table { margin-top: -1px !important; } /* the two bill tables read as one grid */
+/* "Cetak Bil Tuntutan Bulanan" (Semak Bil): an <input class="buttons-set"> inside a <center>, styled with the print buttons above */
+#content > center:has(> input.buttons-set[value^="Cetak"]) { margin: 16px 0 8px; text-align: left; }
+
+/* "Sila bayar di sini" bank links (Semak Bil): one th holding the text and six logo links with a <br> after the third.
+   Make it a label plus even tiles; the text node is hidden (font-size 0) and re-added as a label. */
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) {
+  display: flex; flex-wrap: wrap; justify-content: center; /* no gap: the &nbsp; runs between links are zero-width flex items and would each add one */ width: auto; padding: 12px 0 0 !important; border: 0 !important; background: none !important; font-size: 0;
+}
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"])::before { content: "Sila bayar di sini:"; flex-basis: 100%; margin-bottom: 10px; text-align: center; color: var(--label); font-size: 13px; font-weight: 600; }
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > br { display: none; }
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a {
+  display: flex; align-items: center; justify-content: center; width: 120px; height: 56px; box-sizing: border-box; margin: 0 5px 10px; padding: 8px 12px; /* even side margins so the rows centre exactly */
+  border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: border-color .15s, box-shadow .15s;
+}
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37, 99, 235, .15); }
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+.std:has(> #contacts-right-col) #content .data-table th:has(> a > img[src*="maybank"]) > a > img { width: auto !important; height: auto !important; max-width: 100%; max-height: 34px; object-fit: contain; }

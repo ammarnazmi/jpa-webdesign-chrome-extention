@@ -14,14 +14,34 @@ if (!document.querySelector('meta[name="viewport"]')) {
 // Wrong-password message is a plain <div>; mark it as an alert so screen readers announce it.
 document.querySelector('.registered-users > div[style*="990000"]')?.setAttribute('role', 'alert');
 
-// Help sub-navigation (loadContent) swaps #content for a "Loading..." placeholder first, which flashes an
-// empty card. Put the previous section back instead; observer callbacks run before paint, so it never shows.
+// Some kutipan.php tabs are slow on JPA's server (Semak Bil Tuntutan Bulanan ~8s) and its loadContent shows no
+// placeholder, so the click seemed to do nothing. For the tabs listed here, mark the card as loading (aria-busy,
+// styled in CSS) until the section arrives. The 30s fallback clears it if the request fails.
+const SLOW_TABS = ['kutipan_semakBilTuntutan.php', 'kutipan_tukarModelPBUTamatPengajian.php'];
 const content = document.getElementById('content');
+let busyTimer;
+function setBusy(on) {
+  if (!content) return;
+  clearTimeout(busyTimer);
+  if (!on) { content.removeAttribute('aria-busy'); return; }
+  content.setAttribute('aria-busy', 'true');
+  busyTimer = setTimeout(() => setBusy(false), 30000);
+}
+// Some pages' loadContent (help pages) first swap in a "Loading..." placeholder, which flashes an empty card: put the
+// previous section back instead (observer callbacks run before paint, so it never shows).
 if (content) {
   let last = content.innerHTML;
+  let restoring = false;
   new MutationObserver(() => {
-    if (content.querySelector(':scope > center img[src*="loadbar"]')) content.innerHTML = last;
-    else { addHelpPlaceholders(); markStatuses(); markGrades(); last = content.innerHTML; }
+    if (restoring) { restoring = false; return; } // our own restore below; the real section has not arrived yet
+    if (content.querySelector(':scope > center img[src*="loadbar"]')) {
+      restoring = true;
+      content.innerHTML = last;
+    } else {
+      setBusy(false);
+      addHelpPlaceholders(); markStatuses(); markGrades();
+      last = content.innerHTML;
+    }
   }).observe(content, { childList: true });
 }
 
@@ -78,5 +98,8 @@ if (navLinks.length) {
   const setActive = (active) => navLinks.forEach((a) => (a === active ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
   const page = new URLSearchParams(location.search).get('page');
   setActive((page && navLinks.find((a) => a.getAttribute('href')?.includes(`_${page}.php`))) || navLinks[0]);
-  navLinks.forEach((a) => a.addEventListener('click', () => setActive(a)));
+  navLinks.forEach((a) => a.addEventListener('click', () => {
+    setActive(a);
+    if (SLOW_TABS.some((file) => a.getAttribute('href')?.includes(file))) setBusy(true);
+  }));
 }
