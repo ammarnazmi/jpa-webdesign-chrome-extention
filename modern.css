@@ -1,59 +1,66 @@
 /* Overrides the site's 2009-era fixed 960px layout. Chrome loads extension CSS before the page's,
-   so any property the site also sets needs !important to win. */
+   so any property the site also sets needs !important to win.
+   Visual reference: MYDS, the Malaysian Government Design System (design.digital.gov.my). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 :root {
-  --navy: #0f2a44;
-  --navy-2: #173d63;
+  --navy: #0b1f3a;
+  --navy-2: #12325c;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
-  --bg: #f1f5f9;
+  --accent-soft: #eff6ff;
+  --bg: #f4f6fa;
   --card: #ffffff;
-  --text: #1e293b;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --radius: 14px;
-  --shadow: 0 1px 3px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+  --text: #18181b;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 32px -8px rgba(16, 24, 40, .10);
 }
 
 body {
   background: var(--bg) !important;
   color: var(--text);
-  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font: 15px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
 }
 input, select, textarea, button { font-family: inherit !important; }
+/* 2000s-era 16px clip-art icons next to headings */
+.std h2 > img, .std h3 > img { display: none !important; }
 
 /* Header */
 #header {
   width: auto !important;
   height: auto !important;
-  background: linear-gradient(120deg, var(--navy), var(--navy-2)) !important;
+  background: var(--navy) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 12px max(16px, calc((100% - 1120px) / 2));
-  box-shadow: 0 2px 12px rgba(0, 0, 0, .15);
+  gap: 8px;
+  padding: 10px max(16px, calc((100% - 1120px) / 2));
+  border-bottom: 3px solid #fcd34d;
 }
 #top { height: auto !important; }
 #logo { float: none !important; margin: 0 !important; max-width: 100%; }
 #menu { height: auto !important; margin: 0 !important; }
-#menu ul { display: flex; flex-wrap: wrap; gap: 6px; list-style: none !important; margin: 0; padding: 0; }
+#menu ul { display: flex; flex-wrap: wrap; gap: 4px; list-style: none !important; margin: 0; padding: 0; }
 #menu li { float: none !important; width: auto !important; height: auto !important; background: none !important; }
 #menu li a {
   width: auto !important;
   height: auto !important;
-  padding: 8px 16px;
+  padding: 8px 14px;
   border-radius: 10px;
   background: none !important;
   color: #fff !important;
   text-decoration: none !important;
   transition: background .15s;
 }
-#menu li a:hover { background: rgba(255, 255, 255, .12) !important; }
-#menu li.on a { background: rgba(255, 255, 255, .18) !important; }
+#menu li a:hover { background: rgba(255, 255, 255, .10) !important; }
+#menu li.on a { background: rgba(255, 255, 255, .16) !important; }
 #menu li strong, #menu li em { float: none !important; display: block !important; width: auto !important; margin: 0 !important; }
-#menu li strong { font-size: 14px !important; }
-#menu li em { color: rgba(255, 255, 255, .7) !important; font-size: 12px !important; }
+#menu li strong { font-size: 14px !important; font-weight: 600; }
+#menu li em { color: rgba(255, 255, 255, .65) !important; font-size: 12px !important; }
 
 /* Main layout */
 #main {
@@ -61,7 +68,7 @@ input, select, textarea, button { font-family: inherit !important; }
   float: none !important;
   width: auto !important;
   max-width: 1120px;
-  margin: 28px auto !important;
+  margin: 32px auto !important;
   padding: 0 16px;
   background: none !important;
   box-sizing: border-box;
@@ -70,21 +77,24 @@ input, select, textarea, button { font-family: inherit !important; }
 #maincol a { color: var(--accent) !important; }
 #left-col, #maincol { float: none !important; width: auto !important; margin: 0 0 20px !important; display: flow-root !important; }
 #left-col > div { float: none !important; }
-.block-banner .block-content { text-align: left; }
+.block-banner .block-content { text-align: left; margin: 0 !important; }
+
+/* "First time?" notice: a slim info strip like an MYDS callout */
 .block-content #firsttime { position: static !important; width: auto !important; height: auto !important; background: none !important; }
 .block-content #firsttime a {
   width: auto !important;
   height: auto !important;
   display: block;
-  padding: 16px 20px;
-  border-radius: var(--radius);
-  background: linear-gradient(120deg, var(--accent), #7c3aed);
-  color: #fff !important;
-  font-weight: 600;
+  padding: 14px 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: #1e40af !important;
+  font-weight: 500;
   text-decoration: none !important;
-  box-shadow: var(--shadow);
 }
-#firsttime a::before { content: "Kali pertama? Daftar eSILA-ID anda di sini \2192"; }
+.block-content #firsttime a:hover { background: #dbeafe; }
+#firsttime a::before { content: "\2139\FE0F  Kali pertama di MySELF? Daftar eSILA-ID anda di sini \2192"; }
 
 .std {
   background: var(--card);
@@ -93,51 +103,92 @@ input, select, textarea, button { font-family: inherit !important; }
   box-shadow: var(--shadow);
   padding: 28px !important;
 }
-.page-title h2 { font-size: 24px !important; font-weight: 700; margin-bottom: 16px; }
-.std h3 { font-size: 17px !important; font-weight: 650; color: var(--navy); margin: 12px 0 8px; }
+.page-title { border-color: var(--border) !important; }
+.page-title h2 { font-size: 24px !important; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; }
+.std h3 { font-size: 17px !important; font-weight: 600; color: var(--text); margin: 12px 0 8px; }
 .std p { margin: 0 0 10px !important; }
 .std ul:not(.form-list) { padding-left: 20px; list-style: disc; }
 .std ul:not(.form-list) li { margin: 2px 0; }
 fieldset { border: 0 !important; padding: 0 !important; margin: 0 !important; min-width: 0; }
 fieldset legend { display: none; }
 
-/* Login: two columns side by side, stacked on narrow screens */
+/* Generic two-column sets (inner pages) */
 .col2-set { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
 .col2-set .col-1, .col2-set .col-2 { width: auto !important; }
 .col2-set:has(> .col-2:only-child) { grid-template-columns: 1fr; }
-.registered-users {
-  background: #f8fafc;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-}
 @media (max-width: 760px) {
   .col2-set { grid-template-columns: minmax(0, 1fr); }
   .std { padding: 20px !important; }
 }
 
+/* ---- Login page (body.cms-home) ---- */
+/* No outer card: the login form and the announcements become separate cards */
+.cms-home .std { background: none; border: 0; box-shadow: none; padding: 0 !important; }
+.cms-home .page-title { display: none; }
+.cms-home #login-form {
+  display: block !important; /* the site's reset makes <form> inline */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.cms-home #login-form .col2-set { gap: 0; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.cms-home #login-form .col2-set:has(> .col-2:only-child):not(:has(.buttons-set)) { display: none; } /* emptied by content.js */
+
+/* Left: brand panel */
+.cms-home .new-users {
+  background: radial-gradient(120% 90% at 0% 0%, #1d4ed8 0%, transparent 60%), linear-gradient(160deg, var(--navy-2), var(--navy));
+  color: #dbe4f3;
+  padding: 40px;
+}
+.cms-home .new-users h3 { color: #fff; font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 12px; }
+.cms-home .new-users h3::before { content: "MySELF"; display: block; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: #fcd34d; margin-bottom: 6px; }
+.cms-home .new-users b, .cms-home .new-users u { color: #fff; }
+.cms-home .new-users ul { list-style: none !important; padding: 0 !important; margin-top: 14px !important; display: grid; gap: 8px; }
+.cms-home .new-users li { position: relative; padding-left: 28px; margin: 0 !important; }
+.cms-home .new-users li::before {
+  content: "\2713";
+  position: absolute; left: 0; top: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(252, 211, 77, .18); color: #fcd34d;
+  font-size: 11px; font-weight: 700; line-height: 18px; text-align: center;
+}
+
+/* Right: sign-in form first, "what is eSILA-ID" as a footnote below it */
+.cms-home .registered-users { display: flex; flex-direction: column; padding: 40px; }
+.cms-home .registered-users > br, .cms-home .registered-users > p:empty { display: none; }
+.cms-home .registered-users > h3:first-of-type,
+.cms-home .registered-users > h3:first-of-type + p { order: 2; }
+.cms-home .registered-users > h3:first-of-type { font-size: 13px !important; color: var(--muted); margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--border); }
+.cms-home .registered-users > h3:first-of-type + p { font-size: 13px; color: var(--muted); }
+.cms-home .registered-users > h3:nth-of-type(2) { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; margin: 0 0 2px; }
+.cms-home .registered-users > p.required { text-align: left; margin: -4px 0 0 !important; }
+
 /* Forms */
-.std ul.form-list { list-style: none; padding: 0; }
-.form-list li { margin: 0 0 14px !important; }
-.form-list label { font-weight: 600; font-size: 14px; }
+.std ul.form-list { list-style: none; padding: 0; margin-top: 16px !important; }
+.form-list li { margin: 0 0 16px !important; }
+.form-list li > br { display: none; }
+.form-list label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
 .form-list input.input-text { width: 100% !important; box-sizing: border-box; }
 input.input-text, select, textarea {
   max-width: 100%;
   padding: 10px 12px !important;
-  margin-top: 4px;
-  border: 1px solid #cbd5e1 !important;
+  border: 1px solid #d4d4d8 !important;
   border-radius: 10px;
   background: #fff;
   font-size: 15px !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
   transition: border-color .15s, box-shadow .15s;
 }
 input.input-text:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, .2);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, .18);
 }
 .required { color: #dc2626 !important; }
-p.required { font-size: 13px !important; }
+p.required { font-size: 12px !important; }
 
 /* Buttons */
 .buttons-set { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; padding: 12px 0 0 !important; }
@@ -146,7 +197,7 @@ button.button {
   background: var(--accent) !important;
   border: 0 !important;
   border-radius: 10px;
-  padding: 10px 18px;
+  padding: 11px 18px;
   margin: 0 !important;
   cursor: pointer;
   transition: background .15s, transform .05s;
@@ -154,23 +205,48 @@ button.button {
 button.button span { color: #fff !important; font-size: 14px !important; font-weight: 600 !important; padding: 0 !important; }
 button.button:hover { background: var(--accent-hover) !important; }
 button.button:active { transform: translateY(1px); }
-#lupa { background: #e2e8f0 !important; }
-#lupa span { color: var(--text) !important; }
-#lupa:hover { background: #cbd5e1 !important; }
+button.button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+/* Login card: full-width sign-in button, then two text links on one row (MYDS login pattern) */
+.cms-home .registered-users .buttons-set { gap: 14px 10px; justify-content: space-between; padding: 16px 0 0 !important; }
+.cms-home .registered-users #send { order: -1; flex-basis: 100%; padding: 13px 18px; }
+.cms-home .registered-users .buttons-set .f-left { order: 1; float: none; margin: 0; font-size: 14px; font-weight: 500; text-decoration: none !important; }
+.cms-home .registered-users #lupa { order: 2; background: none !important; box-shadow: none; padding: 0; }
+.cms-home .registered-users #lupa span { color: var(--accent) !important; font-weight: 500 !important; }
+.cms-home .registered-users #lupa:hover span, .cms-home .registered-users .f-left:hover { text-decoration: underline !important; }
 
-/* Announcements: the warning gif sits before each <p>, give each notice a soft callout look */
+@media (max-width: 760px) {
+  .cms-home #login-form .col2-set { grid-template-columns: minmax(0, 1fr); }
+  .cms-home .registered-users { order: -1; } /* sign-in first on narrow windows */
+  .cms-home .new-users, .cms-home .registered-users { padding: 24px; }
+}
+
+/* Announcements: the warning gif sits before each <p>; each notice becomes a card */
+.account-login > h3 { font-size: 20px !important; font-weight: 700; margin: 0 0 4px; }
+.account-login > h3 + br { display: none; }
 .account-login > img[src*="important"] { display: none; }
 .account-login > img[src*="important"] + p {
-  background: #fffbeb;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-left: 4px solid #f59e0b;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin: 12px 0 6px;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 14px 0 6px !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
 }
+.account-login > p > a[target="_blank"]:only-child {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+.account-login > p > a[target="_blank"]:only-child::after { content: " \2197"; }
 
 /* Tables (inner pages) */
 .data-table { border-collapse: collapse; width: 100%; }
-.data-table th { background: #f8fafc; border-color: var(--border) !important; }
+.data-table th { background: #fafafa; border-color: var(--border) !important; }
 .data-table td { border-color: var(--border) !important; }
 
 /* Footer */
