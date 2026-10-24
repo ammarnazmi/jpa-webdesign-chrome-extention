@@ -584,3 +584,47 @@ ul#nav li a[aria-current="page"] { background: var(--accent-soft) !important; co
 @media (max-width: 760px) {
   .std:has(> #contacts-right-col) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
 }
+
+/* ---- Activity table (home > Aktiviti MySELF): a data-table with a header row (Bil | Perkhidmatan | Status | Tempoh) ---- */
+#content h3:has(+ table.data-table th:nth-child(3)) > img.ikon { display: none; }
+#content table.data-table:has(th:nth-child(3)) { width: 100% !important; margin: 0 !important; border-collapse: collapse; }
+#content table.data-table:has(th:nth-child(3)) ~ br { display: none; }
+#content table.data-table:has(th:nth-child(3)) th,
+#content table.data-table:has(th:nth-child(3)) td { padding: 14px 12px !important; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; text-align: left !important; vertical-align: top; }
+#content table.data-table:has(th:nth-child(3)) th { padding-top: 8px !important; padding-bottom: 8px !important; color: var(--muted); font-size: 12px; letter-spacing: .02em; }
+#content table.data-table:has(th:nth-child(3)) th strong { font-weight: 600; }
+#content table.data-table:has(th:nth-child(3)) th:nth-child(3), #content table.data-table:has(th:nth-child(3)) td:nth-child(3) { text-align: center !important; } /* Status */
+#content table.data-table:has(th:nth-child(3)) tr:last-child > td { border-bottom: 0 !important; }
+#content table.data-table:has(th:nth-child(3)) td:first-child, #content table.data-table:has(th:nth-child(3)) td:last-child { color: var(--muted); white-space: nowrap; }
+#content table.data-table:has(th:nth-child(3)) td:nth-child(2) > b { font-size: 15px; font-weight: 600; }
+#content table.data-table:has(th:nth-child(3)) td:nth-child(2) > div { margin-top: 2px; color: var(--muted); font-size: 13px; }
+#content table.data-table:has(th:nth-child(3)) td:nth-child(2) > div b { font-weight: 400; }
+/* status pill (content.js wraps the text and adds ok / pending / fail) */
+.ext-status { display: inline-block; padding: 3px 10px; border-radius: 999px; background: #f4f4f5; color: #3f3f46; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.ext-status.ok { background: #ecfdf5; color: #047857; }
+.ext-status.pending { background: #fffbeb; color: #b45309; }
+.ext-status.fail { background: #fef2f2; color: #b91c1c; }
+
+/* ---- Update forms on the details page (Kemaskini Alamat Emel, form#frmBorang) ---- */
+/* "Perhatian" notice (.info2): old warning gif + underlines -> plain info callout */
+.info2 { margin: 0 0 20px; padding: 14px 16px !important; border: 1px solid #bfdbfe; border-radius: 12px; background: var(--accent-soft) !important; font-size: 13px; }
+.info2 > img[src*="warning"], .info2 > br { display: none; }
+.info2 u { text-decoration: none; }
+.info2 > u b { color: #1e3a8a; font-size: 14px; }
+.info2 ul { margin: 6px 0 0 !important; padding-left: 18px !important; }
+.info2 li { margin: 2px 0; }
+/* "MAKLUMAT EMEL" section row: centred table row -> left-aligned section label */
+#frmBorang td[colspan="2"] center { padding-top: 12px; text-align: left; font-size: 13px; letter-spacing: .04em; } /* the <center>, not the td: the details-table td rules are more specific */
+#frmBorang .input-text, #frmBorang select { display: block; width: 100% !important; max-width: 360px; box-sizing: border-box; }
+#frmBorang td > .input-text + .input-text { margin-top: 8px; } /* e.g. address lines 2 and 3 share one cell */
+/* a label with rowspan=2 (Alamat) spans two rows: no divider inside the group, tight gap where they meet.
+   #content + .data-table so this outranks the details-table td rules */
+#content #frmBorang .data-table tr:has(> th[rowspan]) > td { border-bottom: 0 !important; padding-bottom: 4px !important; }
+#content #frmBorang .data-table tr:has(> th[rowspan]) + tr > td { padding-top: 4px !important; }
+/* required: star gif -> red asterisk after the label */
+#frmBorang img[src*="mandatory"] { display: none !important; } /* inline style sets display:block */
+#frmBorang tr:has(img[src*="mandatory"]) th strong::after { content: " *"; color: #dc2626; }
+/* submit button has class "buttons-set", so undo the login-row flex rules */
+#frmBorang input[type="submit"] { display: inline-block !important; padding: 11px 20px !important; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+#frmBorang input[type="submit"]:hover { background: var(--accent-hover); }
+#frmBorang input[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
