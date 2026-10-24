@@ -45,6 +45,14 @@ if (content) {
   }).observe(content, { childList: true });
 }
 
+// perkhidmatan.php: move the "Maklumat Lanjut" card from the right column into the left column, under the side menu,
+// so the details card fills the row. The details-page CSS is keyed on that right column, so mark the page first.
+if (location.pathname.endsWith('/perkhidmatan.php')) {
+  const info = document.getElementById('contacts-right-col');
+  const side = document.getElementById('left-col');
+  if (info && side) { info.parentElement.classList.add('ext-details'); side.append(info); }
+}
+
 // Home page: the profile photo iframe is absolutely positioned over the content; put it at the top of the sidebar.
 const photo = document.getElementById('gambar');
 const sidebar = document.getElementById('left-col');
